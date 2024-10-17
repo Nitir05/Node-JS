@@ -4,7 +4,7 @@ GET /users - HTML document render - DONE
 GET /api/users - List all users - DONE
 GET /api/users/:id - Get user with id - DONE
 
-POST /api/users - create new user
+POST /api/users - create new user - DONE
 
 PATCH /api/users/:id - Edit the user with id
 
