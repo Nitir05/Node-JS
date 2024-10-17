@@ -1,0 +1,11 @@
+//Create REST api handling JSON data
+
+GET /users - HTML document render - DONE
+GET /api/users - List all users - DONE
+GET /api/users/:id - Get user with id - DONE
+
+POST /api/users - create new user
+
+PATCH /api/users/:id - Edit the user with id
+
+DELETE /apiusers/:id - Delete the user with id
