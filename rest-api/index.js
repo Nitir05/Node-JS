@@ -1,6 +1,5 @@
 const express = require("express");
 const fs = require("fs");
-
 const users = require("./data/MOCK_DATA.json");
 
 const port = process.env.PORT || 3000;
@@ -24,7 +23,8 @@ app.get("/users", (req, res) => {
 
 //REST Apis
 app.get("/api/users", (req, res) => {
-    return res.json(users);
+    //Always append X- for custom headers
+    return res.setHeader("X-User-Name", "Nitin").json(users);
 });
 
 app.route("/api/users/:id")
@@ -34,8 +34,7 @@ app.route("/api/users/:id")
         if (user) {
             return res.json(user);
         } else {
-            res.status(404);
-            return res.json({
+            return res.status(404).json({
                 success: false,
                 message: `No user found with id: ${userId}`,
             });
@@ -47,8 +46,7 @@ app.route("/api/users/:id")
         const user = users.find((eachUser) => eachUser.id === userId);
 
         if (!user) {
-            res.status(404);
-            return res.json({
+            return res.status(404).json({
                 success: false,
                 message: `No User found with id: ${userId}`,
             });
@@ -73,8 +71,7 @@ app.route("/api/users/:id")
             JSON.stringify(updatedUsers),
             (err, result) => {
                 if (err) {
-                    res.status(500);
-                    return res.json({
+                    return res.status(500).json({
                         success: false,
                         message: `Error occured while updating user details ${err.stack}`,
                     });
@@ -92,8 +89,7 @@ app.route("/api/users/:id")
         const user = users.find((eachUser) => eachUser.id === userId);
 
         if (!user) {
-            res.status(404);
-            return res.json({
+            return res.status(404).json({
                 success: false,
                 message: `No User found with id: ${userId}`,
             });
@@ -110,8 +106,7 @@ app.route("/api/users/:id")
             JSON.stringify(filteredUsers),
             (err, result) => {
                 if (err) {
-                    res.status(500);
-                    return res.json({
+                    return res.status(500).json({
                         success: false,
                         message: `Error occured while deleting user ${err.stack}`,
                     });
@@ -126,12 +121,17 @@ app.route("/api/users/:id")
     });
 
 app.post("/api/users", ({ body }, res) => {
+    if (!body.first_name || !body.last_name || !body.email || !body.gender) {
+        return res.status(400).json({
+            status: false,
+            message: "Request is missing required values",
+        });
+    }
     const existingUser = users.find(
         (eachUser) => eachUser.email === body.email
     );
     if (existingUser) {
-        res.status(409);
-        return res.json({
+        return res.status(409).json({
             success: false,
             message: `User already exists with email: ${body.email}`,
         });
@@ -144,14 +144,12 @@ app.post("/api/users", ({ body }, res) => {
         JSON.stringify(users),
         (err, result) => {
             if (err) {
-                res.status(500);
-                return res.json({
+                return res.status(500).json({
                     success: false,
                     message: `Error occured while creating user ${err.stack}`,
                 });
             } else {
-                res.status(201);
-                return res.json({
+                return res.status(201).json({
                     success: true,
                     message: `User created successfully with id: ${users.length}`,
                 });
