@@ -19,10 +19,9 @@ const handleGenerateNewURL = async (req, res) => {
             visitHistory: [],
         });
 
-        res.json({
-            success: true,
-            message: `Short URL created: ${shortID}`,
-        });
+        res.render("home", {
+            id: shortID
+        })
     } catch (error) {
         res.status(500).json({
             success: false,

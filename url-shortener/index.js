@@ -1,7 +1,10 @@
 const express = require("express");
-const urlRouter = require("./routes/url");
+const path = require("path");
+const urlRoute = require("./routes/url");
+const staticRoute = require("./routes/staticRouter");
 const { connectDB } = require("./connection");
 const { handleGetRedirectURL } = require("./controllers/url");
+const URL = require("./models/url");
 
 const port = 8080;
 
@@ -12,8 +15,11 @@ connectDB("mongodb://127.0.0.1:27017/node-js-app")
     .catch((err) => console.log(`Error while connecting to MongoDB => ${err}`));
 
 app.use(express.json());
-app.use(express.urlencoded());
-app.use("/url", urlRouter);
+app.use(express.urlencoded({ extended: false }));
+app.use("/url", urlRoute);
+app.use("/", staticRoute);
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 
 app.get("/:shortId", handleGetRedirectURL);
 
