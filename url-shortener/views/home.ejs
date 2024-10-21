@@ -9,6 +9,9 @@
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: black;
+    color: #fff;
+    text-align: center;
   }
 </style>
 
@@ -21,8 +24,7 @@
       <button type="submit">Generate</button>
     </form>
     <% if (locals.id) { %>
-      <p>URL generated: http://localhost:8080/url/<%= id %>
-      </p>
+      <p>URL generated: <a href="http://localhost:8080/<%= locals.id %>">http://localhost:8080/<%= locals.id %></a></p>
       <% } %>
   </div>
 </body>
