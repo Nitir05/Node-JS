@@ -1,10 +1,13 @@
 const express = require("express");
 const path = require("path");
-const urlRoute = require("./routes/url");
-const staticRoute = require("./routes/staticRouter");
+const cookieParser = require("cookie-parser")
 const { connectDB } = require("./connection");
 const { handleGetRedirectURL } = require("./controllers/url");
-const URL = require("./models/url");
+const {restrictToLoggedInUserOnly} = require("./middlewares/auth")
+
+const urlRoute = require("./routes/url");
+const staticRoute = require("./routes/staticRouter");
+const userRoute = require("./routes/user")
 
 const port = 8080;
 
@@ -16,8 +19,12 @@ connectDB("mongodb://127.0.0.1:27017/node-js-app")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/url", urlRoute);
+app.use(cookieParser());
+
+app.use("/url",restrictToLoggedInUserOnly,  urlRoute);
 app.use("/", staticRoute);
+app.use("/user", userRoute);
+
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
