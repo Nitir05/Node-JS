@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser")
 const { connectDB } = require("./connection");
 const { handleGetRedirectURL } = require("./controllers/url");
-const {restrictToLoggedInUserOnly} = require("./middlewares/auth")
+const {restrictToLoggedInUserOnly, checkAuthorization} = require("./middlewares/auth")
 
 const urlRoute = require("./routes/url");
 const staticRoute = require("./routes/staticRouter");
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/url",restrictToLoggedInUserOnly,  urlRoute);
-app.use("/", staticRoute);
+app.use("/",staticRoute);
 app.use("/user", userRoute);
 
 app.set("view engine", "ejs");
