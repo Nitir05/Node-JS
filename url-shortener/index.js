@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser")
 const { connectDB } = require("./connection");
 const { handleGetRedirectURL } = require("./controllers/url");
-const {restrictToLoggedInUserOnly, checkAuthorization} = require("./middlewares/auth")
+const {restrictToLoggedInUserOnly} = require("./middlewares/auth")
 
 const urlRoute = require("./routes/url");
 const staticRoute = require("./routes/staticRouter");

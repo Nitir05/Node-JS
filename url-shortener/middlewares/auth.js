@@ -14,15 +14,7 @@ const restrictToLoggedInUserOnly = async (req, res, next) => {
 
 }
 
-const checkAuthorization = (req, res, next) => {
-  const userUid = req.cookies?.uid;
-  
-  if(!userUid) return res.redirect("/login");
-
-  next();
-}
 
 module.exports = {
-  restrictToLoggedInUserOnly,
-  checkAuthorization
+  restrictToLoggedInUserOnly
 }
